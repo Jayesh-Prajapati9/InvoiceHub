@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: zoho-invoice-backend
+    env: node
+    plan: free
+
+    buildCommand: |
+      cd backend
+      npm install
+      npx prisma generate
+      npm run build
+
+    startCommand: |
+      cd backend
+      npm start
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+      - key: PORT
+        value: 10000
+
+      - key: JWT_SECRET
+        generateValue: true
+
+      - key: JWT_EXPIRES_IN
+        value: 7d
+
+      - key: DATABASE_URL
+        sync: false   # SUPABASE DB URL
+
+      - key: FRONTEND_URL
+        sync: false   # Vercel frontend URL

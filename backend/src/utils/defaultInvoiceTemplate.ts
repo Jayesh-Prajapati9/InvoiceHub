@@ -1,0 +1,306 @@
+/**
+ * Default HTML template for invoices
+ * This template uses placeholders that will be replaced with actual invoice data
+ */
+export const getDefaultInvoiceTemplateHTML = () => {
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0 auto;
+      padding: 20px;
+      padding-bottom: 10px;
+      background: white;
+      color: #333;
+      width: 210mm;
+      max-width: 210mm;
+      height: auto;
+      min-height: auto;
+      box-sizing: border-box;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+    .company-info {
+      font-size: 14px;
+    }
+    .company-info p {
+      margin: 4px 0;
+    }
+    .invoice-title {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: right;
+    }
+    .invoice-info {
+      text-align: right;
+      font-size: 14px;
+    }
+    .invoice-info p {
+      margin: 4px 0;
+    }
+    .bill-to {
+      margin-bottom: 30px;
+    }
+    .bill-to h3 {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .bill-to p {
+      margin: 2px 0;
+      font-size: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    th {
+      background-color: #f5f5f5;
+      padding: 12px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: bold;
+      border: 1px solid #ddd;
+    }
+    td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+    }
+    .text-right {
+      text-align: right;
+    }
+    .summary {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 30px;
+    }
+    .summary-content {
+      width: 300px;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 14px;
+    }
+    .summary-total {
+      border-top: 2px solid #333;
+      padding-top: 12px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .total-words {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #666;
+    }
+    .notes, .terms {
+      margin-bottom: 20px;
+    }
+    .notes h4, .terms h4 {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .notes p, .terms p {
+      font-size: 14px;
+      margin: 0;
+    }
+    .signature {
+      margin-top: 20px;
+      margin-bottom: 0;
+      page-break-inside: avoid;
+    }
+    .signature h4 {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .signature-line {
+      border-bottom: 2px solid #333;
+      width: 300px;
+      height: 50px;
+    }
+    .draft-watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      font-size: 120px;
+      color: #e0e0e0;
+      opacity: 0.2;
+      font-weight: bold;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .content-wrapper {
+      position: relative;
+      z-index: 2;
+    }
+    .template-footer {
+      margin-top: 10px;
+      padding-top: 5px;
+      border-top: 1px solid #ddd;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 0;
+      page-break-inside: avoid;
+    }
+    /* Page break handling for tables */
+    table {
+      page-break-inside: auto;
+    }
+    thead {
+      display: table-header-group;
+    }
+    tbody {
+      display: table-row-group;
+    }
+    tr {
+      page-break-inside: avoid;
+      page-break-after: auto;
+    }
+    tfoot {
+      display: table-footer-group;
+    }
+  </style>
+</head>
+<body>
+  {{#if isDraft}}
+  <div class="draft-watermark">Draft</div>
+  {{/if}}
+  
+  <div class="content-wrapper">
+    <div class="header">
+      <div class="company-info">
+        <p><strong>{{companyName}}</strong></p>
+        <p>{{companyAddress}}</p>
+        <p>{{companyCity}}, {{companyState}} {{companyZipCode}}</p>
+        <p>{{companyCountry}}</p>
+        <p>{{companyEmail}}</p>
+      </div>
+      <div>
+        <div class="invoice-title">INVOICE</div>
+        <div class="invoice-info">
+          <p><strong>#</strong> {{invoiceNumber}}</p>
+          <p><strong>Date:</strong> {{issueDate}}</p>
+          <p><strong>Due Date:</strong> {{dueDate}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bill-to">
+      <h3>Bill To</h3>
+      <p><strong>{{contactName}}</strong></p>
+      <p>{{billingAddress}}</p>
+      <p>{{billingCity}}, {{billingState}} {{billingZipCode}}</p>
+      <p>{{billingCountry}}</p>
+    </div>
+
+    {{#if quoteNumber}}
+    <div class="bill-to" style="margin-bottom: 20px; padding: 12px; background-color: #f9fafb; border-left: 4px solid #3b82f6; border-radius: 4px;">
+      <h3 style="margin-bottom: 8px; color: #1e40af;">Associated Quote</h3>
+      <p style="margin: 4px 0; font-size: 14px;"><strong>Quote #:</strong> {{quoteNumber}}</p>
+    </div>
+    {{/if}}
+
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Item & Description</th>
+          <th class="text-right">Qty</th>
+          <th class="text-right">Rate</th>
+          <th class="text-right">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each items}}
+        <tr>
+          <td>{{@index}}</td>
+          <td>
+            <strong>{{name}}</strong>
+            {{#if description}}
+            <br><small>{{description}}</small>
+            {{/if}}
+          </td>
+          <td class="text-right">{{quantity}}</td>
+          <td class="text-right">{{rate}}</td>
+          <td class="text-right">{{amount}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+    <div class="summary">
+      <div class="summary-content">
+        <div class="summary-row">
+          <span>Sub Total</span>
+          <span>{{subtotal}}</span>
+        </div>
+        {{#if taxAmount}}
+        <div class="summary-row">
+          <span>Tax</span>
+          <span>{{taxAmount}}</span>
+        </div>
+        {{/if}}
+        <div class="summary-row summary-total">
+          <span>Total</span>
+          <span>{{total}}</span>
+        </div>
+        {{#if paidAmount}}
+        <div class="summary-row">
+          <span>Paid</span>
+          <span>{{paidAmount}}</span>
+        </div>
+        {{/if}}
+        {{#if remainingAmount}}
+        <div class="summary-row">
+          <span>Remaining</span>
+          <span>{{remainingAmount}}</span>
+        </div>
+        {{/if}}
+        <div class="total-words">
+          Total in Words: <strong>{{totalInWords}}</strong>
+        </div>
+      </div>
+    </div>
+
+    {{#if notes}}
+    <div class="notes">
+      <h4>Notes</h4>
+      <p>{{notes}}</p>
+    </div>
+    {{/if}}
+
+    <div class="terms">
+      <h4>Terms & Conditions</h4>
+      <p>Standard terms and conditions apply.</p>
+    </div>
+
+    <div class="signature">
+      <h4>Authorized Signature</h4>
+      <div class="signature-line"></div>
+    </div>
+
+    <div class="template-footer">
+      PDF Template: '{{templateName}}'
+    </div>
+  </div>
+</body>
+</html>`;
+};
+

@@ -1,0 +1,24 @@
+{
+  "name": "zoho-invoice",
+  "version": "1.0.0",
+  "description": "Partial clone of Zoho Invoice - Evaluation Project",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --parallel --filter './backend' --filter './frontend' dev",
+    "build": "pnpm --filter './backend' build && pnpm --filter './frontend' build",
+    "backend:dev": "pnpm --filter './backend' dev",
+    "frontend:dev": "pnpm --filter './frontend' dev",
+    "backend:prisma:generate": "pnpm --filter './backend' prisma:generate",
+    "backend:prisma:migrate": "pnpm --filter './backend' prisma:migrate",
+    "backend:prisma:seed": "pnpm --filter './backend' prisma:seed",
+    "backend:build": "pnpm --filter './backend' build",
+    "frontend:build": "pnpm --filter './frontend' build",
+    "backend:start": "pnpm --filter './backend' start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
