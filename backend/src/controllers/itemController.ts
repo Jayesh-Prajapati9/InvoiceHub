@@ -150,7 +150,7 @@ export const createItem = async (req: AuthRequest, res: Response) => {
 
     // Get user name for activity log
     const user = await prisma.user.findUnique({
-      where: { id: req.user.userId },
+      where: { id: req.user?.userId },
       select: { name: true },
     });
 
@@ -228,7 +228,7 @@ export const updateItem = async (req: AuthRequest, res: Response) => {
 
     // Get user name for activity log
     const user = await prisma.user.findUnique({
-      where: { id: req.user.userId },
+      where: { id: req.user?.userId },
       select: { name: true },
     });
 
@@ -286,7 +286,7 @@ export const deleteItem = async (req: AuthRequest, res: Response) => {
 
     // Get user name for activity log
     const user = await prisma.user.findUnique({
-      where: { id: req.user.userId },
+      where: { id: req.user?.userId },
       select: { name: true },
     });
 

@@ -1,7 +1,8 @@
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
+import ms from 'ms';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-key';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
+const JWT_EXPIRES_IN = (process.env.JWT_EXPIRES_IN || '7d') as ms.StringValue;
 
 export interface JWTPayload {
   userId: string;
@@ -10,9 +11,11 @@ export interface JWTPayload {
 }
 
 export const generateToken = (payload: JWTPayload): string => {
-  return jwt.sign(payload, JWT_SECRET, {
+  const options: SignOptions = {
     expiresIn: JWT_EXPIRES_IN,
-  });
+  };
+
+  return jwt.sign(payload, JWT_SECRET, options);
 };
 
 export const verifyToken = (token: string): JWTPayload => {

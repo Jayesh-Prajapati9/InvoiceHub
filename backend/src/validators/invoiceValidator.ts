@@ -3,39 +3,60 @@ import { z } from 'zod';
 export const invoiceItemSchema = z.object({
   itemId: z.union([z.string().uuid(), z.literal('')]).optional().nullable(),
   type: z.enum(['ITEM', 'HEADER', 'TIMESHEET']).default('ITEM'),
-  name: z.string().min(1, 'Item/Header name is required'),
+  name: z.string().optional(),
   description: z.string().optional().nullable(),
   quantity: z.number().min(0).default(0),
   rate: z.number().min(0).default(0),
   taxRate: z.number().min(0).max(100).default(0),
-}).refine((data) => {
-  // Headers don't need quantity/rate validation, just need a name
+}).superRefine((data, ctx) => {
+  // HEADER
   if (data.type === 'HEADER') {
-    return data.name && data.name.trim().length > 0;
-  }
-  // Timesheet items need positive quantity and rate, and a name
-  if (data.type === 'TIMESHEET') {
-    return data.quantity > 0 && data.rate > 0 && data.name && data.name.trim().length > 0;
-  }
-  // Items need positive quantity and rate, and a name
-  return data.quantity > 0 && data.rate > 0 && data.name && data.name.trim().length > 0;
-}, {
-  message: (data) => {
-    if (data.type === 'HEADER') {
-      return 'Header name is required';
-    }
-    if (data.type === 'TIMESHEET') {
-      if (!data.name || data.name.trim().length === 0) {
-        return 'Timesheet item name is required';
-      }
-      return 'Timesheet hours and rate must be positive';
-    }
     if (!data.name || data.name.trim().length === 0) {
-      return 'Item name is required';
+      ctx.addIssue({
+        path: ['name'],
+        message: 'Header name is required',
+        code: z.ZodIssueCode.custom,
+      });
     }
-    return 'Quantity and rate must be positive for items';
-  },
-  path: ['name'],
+    return;
+  }
+
+  // TIMESHEET
+  if (data.type === 'TIMESHEET') {
+    if (!data.name || data.name.trim().length === 0) {
+      ctx.addIssue({
+        path: ['name'],
+        message: 'Timesheet item name is required',
+        code: z.ZodIssueCode.custom,
+      });
+    }
+
+    if (data.quantity <= 0 || data.rate <= 0) {
+      ctx.addIssue({
+        path: ['quantity'],
+        message: 'Timesheet hours and rate must be positive',
+        code: z.ZodIssueCode.custom,
+      });
+    }
+    return;
+  }
+
+  // ITEM
+  if (!data.name || data.name.trim().length === 0) {
+    ctx.addIssue({
+      path: ['name'],
+      message: 'Item name is required',
+      code: z.ZodIssueCode.custom,
+    });
+  }
+
+  if (data.quantity <= 0 || data.rate <= 0) {
+    ctx.addIssue({
+      path: ['quantity'],
+      message: 'Quantity and rate must be positive for items',
+      code: z.ZodIssueCode.custom,
+    });
+  }
 });
 
 export const createInvoiceSchema = z.object({

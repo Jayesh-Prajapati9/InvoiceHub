@@ -12,6 +12,15 @@ import { renderQuoteTemplate } from '../utils/handlebarsTemplateRenderer';
 import { generatePDFFromHTML } from '../services/pdfService';
 import { sendDocumentEmail } from '../services/emailService';
 
+interface QuoteItemInput {
+  itemId?: string;
+  name: string;
+  description?: string;
+  quantity: number;
+  rate: number;
+  taxRate: number;
+}
+
 export const getQuotes = async (req: AuthRequest, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
@@ -162,7 +171,7 @@ export const createQuoteController = async (req: AuthRequest, res: Response) => 
       paymentTerms: validatedData.paymentTerms,
       issueDate: validatedData.issueDate && validatedData.issueDate !== '' ? new Date(validatedData.issueDate) : undefined,
       expiryDate: validatedData.expiryDate && validatedData.expiryDate !== '' ? new Date(validatedData.expiryDate) : undefined,
-      items: cleanedItems,
+      items: cleanedItems as QuoteItemInput[],
       notes: validatedData.notes && validatedData.notes !== '' ? validatedData.notes : undefined,
     });
 
@@ -231,7 +240,7 @@ export const updateQuote = async (req: AuthRequest, res: Response) => {
     // Recalculate totals if items are updated
     let updateData: any = {};
     if (validatedData.items) {
-      const { subtotal, taxAmount, total } = calculateQuoteTotals(validatedData.items);
+      const { subtotal, taxAmount, total } = calculateQuoteTotals(validatedData.items as QuoteItemInput[]);
       updateData.subtotal = subtotal;
       updateData.taxAmount = taxAmount;
       updateData.total = total;
@@ -376,7 +385,7 @@ export const updateQuoteStatusController = async (req: AuthRequest, res: Respons
     const { id } = req.params;
     const { status } = updateQuoteStatusSchema.parse(req.body);
 
-    const quote = await updateQuoteStatus(id, status);
+    const quote = await updateQuoteStatus(id, status as 'DRAFT' | 'SENT' | 'ACCEPTED' | 'REJECTED');
 
     res.json({
       success: true,
