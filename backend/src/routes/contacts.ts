@@ -21,7 +21,7 @@ import {
   createActivityLog,
 } from '../controllers/activityLogController';
 
-const router = Router();
+const router: Router = Router();
 
 // All routes require authentication
 router.use(authenticate);

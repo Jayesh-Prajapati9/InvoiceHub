@@ -89,7 +89,7 @@ export const updatePayment = async (paymentId: string, data: UpdatePaymentInput)
   }
 
   const invoice = payment.invoice;
-  const oldStatus = payment.status;
+  const oldStatus = payment.status as 'DRAFT' | 'PAID';
   const oldAmount = Number(payment.amountReceived);
 
   // Validate amount if being updated

@@ -7,7 +7,7 @@ import {
   deletePaymentController,
 } from '../controllers/paymentController';
 
-const router = Router();
+const router: Router = Router();
 
 // All routes require authentication
 router.use(authenticate);

@@ -8,7 +8,7 @@ import {
   deleteTemplate,
 } from '../controllers/templateController';
 
-const router = Router();
+const router: Router = Router();
 
 // All routes require authentication
 router.use(authenticate);

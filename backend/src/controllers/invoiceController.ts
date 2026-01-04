@@ -13,6 +13,16 @@ import { getDefaultInvoiceTemplate } from '../utils/templateHelper';
 import { generatePDFFromHTML } from '../services/pdfService';
 import { sendDocumentEmail } from '../services/emailService';
 
+interface InvoiceItemInput {
+  itemId?: string;
+  type?: 'ITEM' | 'HEADER' | 'TIMESHEET';
+  name: string;
+  description?: string;
+  quantity: number;
+  rate: number;
+  taxRate: number;
+}
+
 export const getInvoices = async (req: AuthRequest, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
@@ -194,7 +204,7 @@ export const createInvoiceController = async (req: AuthRequest, res: Response) =
       paymentTerms: validatedData.paymentTerms,
       issueDate: validatedData.issueDate && validatedData.issueDate !== '' ? new Date(validatedData.issueDate) : undefined,
       dueDate: validatedData.dueDate && validatedData.dueDate !== '' ? new Date(validatedData.dueDate) : undefined,
-      items: cleanedItems,
+      items: cleanedItems as InvoiceItemInput[],
       notes: validatedData.notes && validatedData.notes !== '' ? validatedData.notes : undefined,
       quoteId: validatedData.quoteId && validatedData.quoteId !== '' ? validatedData.quoteId : undefined,
     });
@@ -419,7 +429,7 @@ export const updateInvoice = async (req: AuthRequest, res: Response) => {
         });
       }
       
-      const { subtotal, taxAmount, total } = calculateInvoiceTotals(validItems);
+      const { subtotal, taxAmount, total } = calculateInvoiceTotals(validItems as InvoiceItemInput[]);
       updateData.subtotal = subtotal;
       updateData.taxAmount = taxAmount;
       updateData.total = total;
