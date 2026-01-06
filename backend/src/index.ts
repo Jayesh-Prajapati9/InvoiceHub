@@ -8,9 +8,7 @@ dotenv.config();
 const app: Express = express();
 const PORT = process.env.PORT || 3001;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
-console.log(FRONTEND_URL);
-console.log(process.env.NODE_ENV);
-console.log(process.env.PORT);
+const API_BASE_URL = FRONTEND_URL.includes('localhost') ? '/api' : '';
 
 
 // Middleware
@@ -62,17 +60,17 @@ import templateRoutes from './routes/templates';
 import dashboardRoutes from './routes/dashboard';
 import paymentRoutes from './routes/payments';
 
-app.use('/auth', authRoutes);
-app.use('/users', userRoutes);
-app.use('/contacts', contactRoutes);
-app.use('/items', itemRoutes);
-app.use('/quotes', quoteRoutes);
-app.use('/invoices', invoiceRoutes);
-app.use('/projects', projectRoutes);
-app.use('/timesheets', timesheetRoutes);
-app.use('/templates', templateRoutes);
-app.use('/dashboard', dashboardRoutes);
-app.use('/payments', paymentRoutes);
+app.use(`${API_BASE_URL}/auth`, authRoutes);
+app.use(`${API_BASE_URL}/users`, userRoutes);
+app.use(`${API_BASE_URL}/contacts`, contactRoutes);
+app.use(`${API_BASE_URL}/items`, itemRoutes);
+app.use(`${API_BASE_URL}/quotes`, quoteRoutes);
+app.use(`${API_BASE_URL}/invoices`, invoiceRoutes);
+app.use(`${API_BASE_URL}/projects`, projectRoutes);
+app.use(`${API_BASE_URL}/timesheets`, timesheetRoutes);
+app.use(`${API_BASE_URL}/templates`, templateRoutes);
+app.use(`${API_BASE_URL}/dashboard`, dashboardRoutes);
+app.use(`${API_BASE_URL}/payments`, paymentRoutes);
 
 // Error handling
 app.use(notFoundHandler);
