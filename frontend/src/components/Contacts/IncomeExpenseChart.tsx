@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import api from '../../services/api';
 import LoadingSpinner from '../LoadingSpinner';
-import { format, subMonths, parseISO } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 interface IncomeExpenseChartProps {
   contactId: string;
@@ -67,8 +67,8 @@ const IncomeExpenseChart = ({ contactId, months = 4 }: IncomeExpenseChartProps) 
             }}
           />
           <Tooltip
-            formatter={(value: number) => [
-              `₹${value.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`,
+            formatter={(value: number | undefined) => [
+              `₹${value?.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`,
               'Income',
             ]}
             labelStyle={{ color: '#374151' }}

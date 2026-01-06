@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import api from '../../services/api';
-import { ArrowLeftIcon, FolderIcon, UserIcon, CurrencyDollarIcon, CalendarIcon } from '@heroicons/react/24/outline';
+import { ArrowLeftIcon, FolderIcon, UserIcon, CalendarIcon } from '@heroicons/react/24/outline';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import ModernDropdown from '../../components/ModernDropdown';
 

@@ -43,7 +43,7 @@ const QuoteItemsTable = ({ fields, register, watch, setValue, items, onItemSelec
   };
 
   const calculateSubtotal = () => {
-    return watchedItems.reduce((sum: number, item: any, index: number) => {
+    return watchedItems.reduce((sum: number, item: any) => {
       // Skip headers in calculations
       if (item?.type === 'HEADER') return sum;
       const quantity = Number(item?.quantity || 0);

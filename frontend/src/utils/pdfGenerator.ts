@@ -74,7 +74,7 @@ export const generatePDF = async (htmlContent: string, filename: string): Promis
     };
 
     // Generate and download PDF
-    await html2pdf().set(opt).from(wrapper).save();
+    await html2pdf().set(opt as any).from(wrapper).save();
     
     // Clean up
     if (document.body.contains(wrapper)) {

@@ -5,7 +5,6 @@ import api from '../../services/api';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import InvoicesSidebar from '../../components/Invoices/InvoicesSidebar';
 import { useToast } from '../../contexts/ToastContext';
-import { renderInvoiceTemplate } from '../../utils/templateRenderer';
 import { generatePDF } from '../../utils/pdfGenerator';
 import EmailModal from '../../components/Invoices/EmailModal';
 import ConfirmModal from '../../components/ConfirmModal';
@@ -14,8 +13,6 @@ import {
   PencilIcon,
   CheckCircleIcon,
   CurrencyDollarIcon,
-  CalendarIcon,
-  DocumentArrowUpIcon,
   PaperAirplaneIcon,
   DocumentArrowDownIcon,
   DocumentTextIcon,
@@ -152,28 +149,6 @@ const InvoiceDetail = () => {
     );
   }
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      minimumFractionDigits: 2,
-    }).format(amount);
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'DRAFT':
-        return 'badge-gray';
-      case 'SENT':
-        return 'badge-info';
-      case 'PAID':
-        return 'badge-success';
-      case 'OVERDUE':
-        return 'badge-danger';
-      default:
-        return 'badge-gray';
-    }
-  };
 
   const handleStatusChange = (newStatus: string) => {
     if (newStatus === 'PAID' && !paidAmount) {
@@ -203,7 +178,6 @@ const InvoiceDetail = () => {
   };
 
   // Determine which template to use for preview
-  const activeTemplateId = previewTemplateId || invoice.templateId;
   const activeTemplate = invoice.template;
 
   // Use backend rendered HTML - it's already processed by Handlebars correctly
@@ -250,15 +224,6 @@ const InvoiceDetail = () => {
     } else {
       navigate(`/invoices/${id}/edit`);
     }
-  };
-
-  const remainingAmount = Number(invoice.total) - Number(invoice.paidAmount || 0);
-
-  // Get HTML for PDF - use EXACT same logic as preview to ensure they match
-  const getPDFHTML = () => {
-    // Use the exact same function that generates the preview HTML
-    // This ensures 100% match between preview and PDF
-    return getRenderedHTML();
   };
 
   const handleDownloadPDF = async () => {

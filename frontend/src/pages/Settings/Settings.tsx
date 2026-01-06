@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../../services/api';
-import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import ModernDropdown from '../../components/ModernDropdown';
@@ -69,7 +68,6 @@ type SettingsFormData = z.infer<typeof settingsSchema>;
 type PasswordFormData = z.infer<typeof passwordSchema>;
 
 const Settings = () => {
-  const { user } = useAuth();
   const { showToast } = useToast();
   const queryClient = useQueryClient();
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
@@ -93,7 +91,6 @@ const Settings = () => {
     formState: { errors: settingsErrors, isSubmitting: isSubmittingSettings },
     setValue: setSettingsValue,
     watch: watchSettings,
-    reset: resetSettings,
   } = useForm<SettingsFormData>({
     resolver: zodResolver(settingsSchema),
     defaultValues: {

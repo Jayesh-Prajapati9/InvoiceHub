@@ -180,8 +180,8 @@ const QuotesList = () => {
   }
 
   const currentPageIds = data?.quotes?.map((q: Quote) => q.id) || [];
-  const allSelected = currentPageIds.length > 0 && currentPageIds.every((id) => selectedQuotes.includes(id));
-  const someSelected = currentPageIds.some((id) => selectedQuotes.includes(id)) && !allSelected;
+  const allSelected = currentPageIds.length > 0 && currentPageIds.every((id: string) => selectedQuotes.includes(id));
+  const someSelected = currentPageIds.some((id: string) => selectedQuotes.includes(id)) && !allSelected;
 
   const getDeleteMessage = () => {
     if (deleteTarget?.type === 'bulk') {

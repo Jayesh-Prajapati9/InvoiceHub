@@ -138,8 +138,8 @@ const InvoicesList = () => {
   };
 
   const currentPageIds = data?.invoices?.map((inv: Invoice) => inv.id) || [];
-  const allSelected = currentPageIds.length > 0 && currentPageIds.every((id) => selectedInvoices.includes(id));
-  const someSelected = currentPageIds.some((id) => selectedInvoices.includes(id)) && !allSelected;
+  const allSelected = currentPageIds.length > 0 && currentPageIds.every((id: string) => selectedInvoices.includes(id));
+  const someSelected = currentPageIds.some((id: string) => selectedInvoices.includes(id)) && !allSelected;
 
   const getStatusColor = (status: string) => {
     switch (status) {

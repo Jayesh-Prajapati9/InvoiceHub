@@ -7,7 +7,6 @@ import {
   ReceiptRefundIcon,
   CurrencyDollarIcon,
   ArrowTrendingUpIcon,
-  PlusIcon,
   ChevronRightIcon,
   CubeIcon,
   FolderIcon,

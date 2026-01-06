@@ -116,8 +116,8 @@ const ItemsList = () => {
   }
 
   const currentPageIds = data?.items?.map((item: Item) => item.id) || [];
-  const allSelected = currentPageIds.length > 0 && currentPageIds.every((id) => selectedItems.includes(id));
-  const someSelected = currentPageIds.some((id) => selectedItems.includes(id)) && !allSelected;
+  const allSelected = currentPageIds.length > 0 && currentPageIds.every((id: string) => selectedItems.includes(id));
+  const someSelected = currentPageIds.some((id: string) => selectedItems.includes(id)) && !allSelected;
 
   const getDeleteMessage = () => {
     if (deleteTarget?.type === 'bulk') {
