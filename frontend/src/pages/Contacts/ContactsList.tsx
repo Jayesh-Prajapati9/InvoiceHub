@@ -145,8 +145,8 @@ const ContactsList = () => {
   }
 
   const currentPageIds = data?.contacts?.map((c: Contact) => c.id) || [];
-  const allSelected = currentPageIds.length > 0 && currentPageIds.every((id) => selectedContacts.includes(id));
-  const someSelected = currentPageIds.some((id) => selectedContacts.includes(id)) && !allSelected;
+  const allSelected = currentPageIds.length > 0 && currentPageIds.every((id: string) => selectedContacts.includes(id));
+  const someSelected = currentPageIds.some((id: string) => selectedContacts.includes(id)) && !allSelected;
 
   const getDeleteMessage = () => {
     if (deleteTarget?.type === 'bulk') {

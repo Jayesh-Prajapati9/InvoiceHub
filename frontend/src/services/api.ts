@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 
 // Use relative URL to leverage Vite proxy in development
 // In production, use VITE_API_URL environment variable
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+const API_BASE_URL = (import.meta as any).env.VITE_API_URL || '/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,

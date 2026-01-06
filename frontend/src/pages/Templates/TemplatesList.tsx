@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
@@ -85,8 +85,8 @@ const TemplatesList = () => {
 
   const currentPageTemplates = data?.templates || [];
   const currentPageNonDefaultIds = currentPageTemplates.filter((t: Template) => !t.isDefault).map((t: Template) => t.id);
-  const allSelected = currentPageNonDefaultIds.length > 0 && currentPageNonDefaultIds.every((id) => selectedTemplates.includes(id));
-  const someSelected = currentPageNonDefaultIds.some((id) => selectedTemplates.includes(id)) && !allSelected;
+  const allSelected = currentPageNonDefaultIds.length > 0 && currentPageNonDefaultIds.every((id: string) => selectedTemplates.includes(id));
+  const someSelected = currentPageNonDefaultIds.some((id: string) => selectedTemplates.includes(id)) && !allSelected;
 
   const getDeleteMessage = () => {
     if (deleteTarget?.type === 'bulk') {
@@ -202,9 +202,8 @@ const TemplatesList = () => {
         onConfirm={handleConfirmDelete}
         title={deleteTarget?.type === 'bulk' ? 'Delete Selected Templates' : 'Delete Template'}
         message={getDeleteMessage()}
-        confirmButtonText="Delete"
+        confirmText="Delete"
         confirmButtonColor="red"
-        isConfirming={deleteMutation.isPending}
       />
     </div>
   );

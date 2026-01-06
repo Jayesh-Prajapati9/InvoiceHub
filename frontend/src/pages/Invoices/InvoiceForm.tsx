@@ -11,57 +11,80 @@ import { ArrowLeftIcon, UserIcon, CalendarIcon, DocumentTextIcon, PlusIcon, Info
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { useToast } from '../../contexts/ToastContext';
 
-const invoiceItemSchema = z.object({
-  // Allow itemId to be UUID, empty string, or undefined (for custom items)
-  itemId: z.union([z.string().uuid(), z.literal(''), z.undefined()]).optional(),
+export const invoiceItemSchema = z.object({
+  itemId: z.union([z.string().uuid(), z.literal('')]).optional(),
   type: z.enum(['ITEM', 'HEADER', 'TIMESHEET']).default('ITEM'),
-  name: z.string().min(1, 'Name is required'),
+  name: z.string().optional(),
   description: z.string().optional(),
   quantity: z.number().min(0).default(0),
   rate: z.number().min(0).default(0),
   taxRate: z.number().min(0).max(100).default(0),
-}).refine((data) => {
-  // Headers need a name (required), but quantity/rate can be 0
+}).superRefine((data, ctx) => {
+  // HEADER
   if (data.type === 'HEADER') {
-    return data.name && data.name.trim().length > 0;
-  }
-  // Timesheet items need a name and positive quantity/rate
-  if (data.type === 'TIMESHEET') {
-    return data.name && data.name.trim().length > 0 && data.quantity > 0 && data.rate > 0;
-  }
-  // Regular items need positive quantity, rate, and a name (all required)
-  return data.quantity > 0 && data.rate > 0 && data.name && data.name.trim().length > 0;
-}, {
-  message: (data) => {
-    if (data.type === 'HEADER') {
-      return 'Header name is required';
-    }
-    if (data.type === 'TIMESHEET') {
-      if (!data.name || data.name.trim().length === 0) {
-        return 'Timesheet item name is required';
-      }
-      if (data.quantity <= 0) {
-        return 'Timesheet hours must be greater than 0';
-      }
-      if (data.rate <= 0) {
-        return 'Timesheet rate must be greater than 0';
-      }
-      return 'Timesheet item is invalid';
-    }
     if (!data.name || data.name.trim().length === 0) {
-      return 'Item name is required';
+      ctx.addIssue({
+        path: ['name'],
+        message: 'Header name is required',
+        code: z.ZodIssueCode.custom,
+      });
     }
-    if (data.quantity <= 0) {
-      return 'Quantity must be greater than 0';
-    }
-    if (data.rate <= 0) {
-      return 'Rate must be greater than 0';
-    }
-    return 'Item name, quantity, and rate are required';
-  },
-  path: ['name'],
-});
+    return;
+  }
 
+  // TIMESHEET
+  if (data.type === 'TIMESHEET') {
+    if (!data.name || data.name.trim().length === 0) {
+      ctx.addIssue({
+        path: ['name'],
+        message: 'Timesheet item name is required',
+        code: z.ZodIssueCode.custom,
+      });
+    }
+
+    if (data.quantity <= 0) {
+      ctx.addIssue({
+        path: ['quantity'],
+        message: 'Timesheet hours must be greater than 0',
+        code: z.ZodIssueCode.custom,
+      });
+    }
+
+    if (data.rate <= 0) {
+      ctx.addIssue({
+        path: ['rate'],
+        message: 'Timesheet rate must be greater than 0',
+        code: z.ZodIssueCode.custom,
+      });
+    }
+    return;
+  }
+
+  // ITEM
+  if (!data.name || data.name.trim().length === 0) {
+    ctx.addIssue({
+      path: ['name'],
+      message: 'Item name is required',
+      code: z.ZodIssueCode.custom,
+    });
+  }
+
+  if (data.quantity <= 0) {
+    ctx.addIssue({
+      path: ['quantity'],
+      message: 'Quantity must be greater than 0',
+      code: z.ZodIssueCode.custom,
+    });
+  }
+
+  if (data.rate <= 0) {
+    ctx.addIssue({
+      path: ['rate'],
+      message: 'Rate must be greater than 0',
+      code: z.ZodIssueCode.custom,
+    });
+  }
+});
 const invoiceSchema = z.object({
   contactId: z.string().uuid('Please select a contact'),
   templateId: z.string().uuid().optional(),
@@ -459,7 +482,7 @@ const InvoiceForm = () => {
           });
 
           console.log('Adding timesheet items to form:', newItems);
-          replace(newItems);
+          replace(newItems as any);
         } else {
           console.log('No timesheets found for date range');
           
@@ -527,7 +550,7 @@ const InvoiceForm = () => {
         items: validItems.map((item) => {
           const cleanedItem: any = {
             type: item.type || 'ITEM',
-            name: item.name.trim(),
+            name: item.name?.trim(),
             // Headers should have quantity and rate as 0
             quantity: item.type === 'HEADER' ? 0 : Number(item.quantity),
             rate: item.type === 'HEADER' ? 0 : Number(item.rate),
@@ -595,7 +618,7 @@ const InvoiceForm = () => {
         items: validItems.map((item) => {
           const cleanedItem: any = {
             type: item.type || 'ITEM',
-            name: item.name.trim(),
+            name: item.name?.trim(),
             // Headers should have quantity and rate as 0
             quantity: item.type === 'HEADER' ? 0 : Number(item.quantity),
             rate: item.type === 'HEADER' ? 0 : Number(item.rate),

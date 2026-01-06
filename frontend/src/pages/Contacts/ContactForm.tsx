@@ -93,9 +93,8 @@ const ContactForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, touchedFields },
+    formState: { errors, isSubmitting },
     setValue,
-    trigger,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
     mode: 'onChange', // Validate on change for better UX
@@ -192,8 +191,6 @@ const ContactForm = () => {
   }
 
   // Single currency - INR (Indian Rupee) as default
-  const defaultCurrency = 'INR';
-
   const languages = [
     { value: 'en', label: 'English' },
     { value: 'es', label: 'Spanish' },

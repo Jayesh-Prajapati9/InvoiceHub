@@ -12,7 +12,6 @@ import {
   BuildingOfficeIcon,
   BanknotesIcon,
   DocumentDuplicateIcon,
-  CalendarIcon,
   CloudArrowUpIcon,
   LockClosedIcon,
 } from '@heroicons/react/24/outline';

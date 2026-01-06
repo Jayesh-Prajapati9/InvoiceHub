@@ -43,7 +43,6 @@ const ItemSelectDropdown = ({
   // Support both patterns
   const dropdownOptions = options || (items && Array.isArray(items) ? items.map(item => ({ value: item.id, label: item.name })) : []);
   const selectedOption = dropdownOptions?.find((opt) => opt.value === value);
-  const selectedItem = items && Array.isArray(items) ? items.find((item) => item.id === value) : undefined;
 
   // Close dropdown when clicking outside and handle body scroll lock
   useEffect(() => {

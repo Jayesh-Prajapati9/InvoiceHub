@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../services/api';
-import { UserIcon } from '@heroicons/react/24/outline';
 
 interface ContactsSidebarProps {
   currentContactId?: string;

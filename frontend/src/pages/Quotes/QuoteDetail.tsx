@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../../services/api';
-import QuoteStatusBadge from '../../components/Quotes/QuoteStatusBadge';
 import QuotesSidebar from '../../components/Quotes/QuotesSidebar';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { useToast } from '../../contexts/ToastContext';
@@ -251,15 +250,6 @@ const QuoteDetail = () => {
       navigate(`/quotes/${id}/edit`);
     }
   };
-
-  // Get current template name
-  const currentTemplateName = (() => {
-    if (previewTemplateId && templates) {
-      const previewTemplate = templates.find((t: any) => t.id === previewTemplateId);
-      if (previewTemplate) return previewTemplate.name;
-    }
-    return quote?.template?.name || 'Spreadsheet Template';
-  })();
 
   return (
     <div className="flex bg-gray-50 -m-6 lg:-m-8 h-screen">

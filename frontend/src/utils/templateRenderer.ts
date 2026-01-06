@@ -427,7 +427,7 @@ export const renderInvoiceTemplate = (
   if (itemsMatch && invoiceData.items && invoiceData.items.length > 0) {
     const itemTemplate = itemsMatch[1];
     let itemIndex = 0; // Track actual item index (excluding headers)
-    const itemsHTML = invoiceData.items.map((item, index) => {
+    const itemsHTML = invoiceData.items.map((item) => {
       const isHeader = item.type === 'HEADER';
       
       if (isHeader) {

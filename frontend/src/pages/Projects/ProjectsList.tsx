@@ -137,8 +137,8 @@ const ProjectsList = () => {
   };
 
   const currentPageIds = data?.projects?.map((proj: Project) => proj.id) || [];
-  const allSelected = currentPageIds.length > 0 && currentPageIds.every((id) => selectedProjects.includes(id));
-  const someSelected = currentPageIds.some((id) => selectedProjects.includes(id)) && !allSelected;
+  const allSelected = currentPageIds.length > 0 && currentPageIds.every((id: string) => selectedProjects.includes(id));
+  const someSelected = currentPageIds.some((id: string) => selectedProjects.includes(id)) && !allSelected;
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -361,7 +361,7 @@ const ProjectsList = () => {
             : 'Are you sure you want to delete this project? This action cannot be undone.'
         }
         confirmText="Delete"
-        confirmClass="btn-danger"
+        confirmButtonColor="red"
       />
     </div>
   );

@@ -11,18 +11,15 @@ import {
   ClockIcon,
   FolderIcon,
   UserIcon,
-  CurrencyDollarIcon,
-  EllipsisVerticalIcon,
   PlusIcon,
   ChevronDownIcon,
   ChevronUpIcon,
-  TrashIcon,
   CheckCircleIcon,
   CalendarIcon,
   DocumentTextIcon,
   StarIcon,
 } from '@heroicons/react/24/outline';
-import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, startOfQuarter, endOfQuarter, startOfYear, endOfYear, subDays, subWeeks, subMonths, subQuarters, subYears, isWithinInterval, parseISO } from 'date-fns';
+import { format, startOfWeek, startOfMonth, startOfYear, subMonths, isWithinInterval } from 'date-fns';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 const ProjectDetail = () => {
@@ -705,7 +702,7 @@ const ProjectDetail = () => {
                       label={{ value: 'Hours', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' } }}
                     />
                     <Tooltip
-                      formatter={(value: number) => [`${value.toFixed(2)} hrs`, '']}
+                      formatter={(value: number | undefined) => [`${value?.toFixed(2)} hrs`, '']}
                       labelStyle={{ color: '#374151', fontWeight: 'bold' }}
                       contentStyle={{
                         backgroundColor: '#fff',
