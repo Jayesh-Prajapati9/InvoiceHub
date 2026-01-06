@@ -62,17 +62,17 @@ import templateRoutes from './routes/templates';
 import dashboardRoutes from './routes/dashboard';
 import paymentRoutes from './routes/payments';
 
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/contacts', contactRoutes);
-app.use('/api/items', itemRoutes);
-app.use('/api/quotes', quoteRoutes);
-app.use('/api/invoices', invoiceRoutes);
-app.use('/api/projects', projectRoutes);
-app.use('/api/timesheets', timesheetRoutes);
-app.use('/api/templates', templateRoutes);
-app.use('/api/dashboard', dashboardRoutes);
-app.use('/api/payments', paymentRoutes);
+app.use('/auth', authRoutes);
+app.use('/users', userRoutes);
+app.use('/contacts', contactRoutes);
+app.use('/items', itemRoutes);
+app.use('/quotes', quoteRoutes);
+app.use('/invoices', invoiceRoutes);
+app.use('/projects', projectRoutes);
+app.use('/timesheets', timesheetRoutes);
+app.use('/templates', templateRoutes);
+app.use('/dashboard', dashboardRoutes);
+app.use('/payments', paymentRoutes);
 
 // Error handling
 app.use(notFoundHandler);
